@@ -11,4 +11,6 @@ python -m social_migrator wizard
 python -m social_migrator preflight
 ```
 
+如果你使用 Windows 安装脚本，`.env` 会自动从 `config/.env.example` 创建；只在本地填写自己的值，不要上传 `.env`。
+
 预检通过后，奶团仍会向你确认，才会发布一条视频。视频分析统一使用 Comfly Gemini；图片方面，Codex/GPT 或其他已确认具备视觉能力的模型直接看图，纯文本模型才调用 Comfly Gemini；YouTube 发布时会选择“不是面向儿童”。
