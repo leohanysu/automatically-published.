@@ -14,6 +14,8 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(prog="social-migrator")
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("wizard")
+    fp = sub.add_parser("feishu-provision")
+    fp.add_argument("--manifest", default="templates/feishu/template-manifest.json")
     pre = sub.add_parser("preflight")
     pre.add_argument("--config")
     pub = sub.add_parser("publish")
@@ -24,8 +26,14 @@ def main(argv=None) -> int:
     pub.add_argument("--live", action="store_true", help="允许调用已验证的浏览器脚本")
     args = parser.parse_args(argv)
     if args.command == "wizard":
-        cfg = run_wizard()
+        cfg = run_wizard(state_path="state/wizard-state.json")
         print(json.dumps(cfg.public_dict(), ensure_ascii=False, indent=2))
+        return 0
+    if args.command == "feishu-provision":
+        from .feishu import load_manifest
+        manifest = load_manifest(args.manifest)
+        result = {"ok": True, "mode": "preflight-only", "copy_mode": manifest["copy_mode"], "tables": [t["name"] for t in manifest["tables"]], "message": "模板结构已读取；连接真实飞书前不会创建或修改任何表格"}
+        print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0
     cfg = Config.load(getattr(args, "config", None))
     if args.command == "preflight":
