@@ -1,4 +1,4 @@
-# 社媒自动化迁移包（Meta + TikTok 双端发布）
+# 社媒自动化迁移包（跨 Agent 多平台发布）
 
 > 打包时间：2026-08-20
 > 状态：✅ 4 条视频全部发布完成（Meta FB+IG + TikTok + 飞书回写）
@@ -34,7 +34,7 @@
 5. **真实鼠标/键盘**：React 应用只认 `Input.dispatchMouseEvent` / `dispatchKeyEvent`，不认 JS click/insertText
 6. **上传**：TikTok 用 `DOM.querySelector('input[type=file]')` 直连（带 sessionId）；Meta 用 chooser 事件
 7. **草稿弹窗**：点 Continue 不点 Discard（Discard 要二次确认卡死）
-8. **视觉验证**：用 ds-vision-skill（GLM）截图确认，不依赖 DOM 检测
+8. **视觉验证**：Codex 或已确认具备视觉能力的模型直接理解截图；只有纯文本模型或能力不确定时，才调用第三方视觉 API（默认 Comfly Gemini），不把 ds-vision 当作 Codex 必需依赖
 
 ## 🚀 恢复使用方法
 
