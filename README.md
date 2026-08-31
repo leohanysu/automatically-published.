@@ -36,6 +36,17 @@
 7. **草稿弹窗**：点 Continue 不点 Discard（Discard 要二次确认卡死）
 8. **视觉验证**：Codex 或已确认具备视觉能力的模型直接理解截图；只有纯文本模型或能力不确定时，才调用第三方视觉 API（默认 Comfly Gemini），不把 ds-vision 当作 Codex 必需依赖
 
+## 🚀 新用户安装方法
+
+Windows 运行 `powershell -ExecutionPolicy Bypass -File .\install.ps1`；macOS/Linux 运行 `bash ./install.sh`。安装后复制 `config/.env.example` 为 `.env`，填写自己的 Comfly key 和飞书授权，再运行：
+
+```bash
+python -m social_migrator wizard
+python -m social_migrator preflight
+```
+
+预检通过后，奶团会再次确认是否发布一条视频。
+
 ## 🚀 恢复使用方法
 
 1. 把 `skills/` 下两个技能复制回 `~/AppData/Local/hermes/skills/media/`
