@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "copy_mode": "structure_only",
+  "tables": [
+    {
+      "name": "视频发布库",
+      "fields": [
+        {"name": "视频", "type": "attachment", "required": true},
+        {"name": "视频标题", "type": "text"},
+        {"name": "发布正文", "type": "text"},
+        {"name": "IG/FB标签", "type": "text"},
+        {"name": "TikTok标签", "type": "text"},
+        {"name": "Pinterest标题", "type": "text"},
+        {"name": "Pinterest描述", "type": "text"},
+        {"name": "Pinterest标签", "type": "text", "default": "用户确认的默认标签集合"},
+        {"name": "发布状态", "type": "single_select"},
+        {"name": "平台发布记录", "type": "text"}
+      ],
+      "views": ["全部视频", "待发布", "已发布", "失败待处理"]
+    }
+  ],
+  "excluded_data": ["historical_videos", "historical_captions", "publish_records", "credentials"]
+}
