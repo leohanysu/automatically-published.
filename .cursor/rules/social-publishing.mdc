@@ -1,0 +1,6 @@
+---
+description: 奶团社媒自动发布规则
+alwaysApply: true
+---
+
+先运行 `python -m social_migrator wizard` 和 `preflight`。视频分析统一走 Comfly Gemini，默认只处理一条视频；发布前必须得到用户明确确认。

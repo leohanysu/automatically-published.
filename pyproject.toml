@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "social-publishing-migrator"
+version = "0.1.0"
+description = "奶团跨 Agent 社媒自动发布迁移包"
+requires-python = ">=3.11"
+
+[tool.setuptools.packages.find]
+include = ["social_migrator*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
