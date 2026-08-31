@@ -4,6 +4,7 @@ import json
 from .config import Config
 from .evidence import new_run, write_json
 from .media_router import route_media
+from .preflight import preflight_dict
 from .wizard import run_wizard
 
 
@@ -23,10 +24,10 @@ def main(argv=None) -> int:
         return 0
     cfg = Config.load(getattr(args, "config", None))
     if args.command == "preflight":
-        problems = cfg.validate()
-        result = {"ok": not problems, "problems": problems, "config": cfg.public_dict(), "video_route": route_media("video", cfg.native_vision).__dict__}
+        result = preflight_dict(cfg)
+        result.update({"config": cfg.public_dict(), "video_route": route_media("video", cfg.native_vision).__dict__})
         print(json.dumps(result, ensure_ascii=False, indent=2))
-        return 0 if not problems else 2
+        return 0 if result["ok"] else 2
     if args.command == "publish":
         if not args.confirm:
             print(json.dumps({"ok": False, "error": "需要明确确认：请加 --confirm；默认只发布 1 条"}, ensure_ascii=False))
