@@ -1,0 +1,33 @@
+# Secrets and local credentials
+.env
+.env.*
+!.env.example
+**/*cookie*
+**/*token*
+**/*secret*
+
+# Runtime data and evidence that may contain account or record metadata
+backups/
+logs/
+state/
+*.manifest.json
+*.ndjson
+
+# Local media and browser artifacts
+*.mp4
+*.mov
+*.webm
+screenshots/
+downloads/
+tmp/
+
+# Python/OS/editor artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.idea/
+.vscode/
+Thumbs.db
+Desktop.ini
