@@ -16,6 +16,10 @@ def main(argv=None) -> int:
     sub.add_parser("wizard")
     fp = sub.add_parser("feishu-provision")
     fp.add_argument("--manifest", default="templates/feishu/template-manifest.json")
+    st = sub.add_parser("status")
+    st.add_argument("--run-id", required=True)
+    rb = sub.add_parser("rollback")
+    rb.add_argument("--run-id", required=True)
     pre = sub.add_parser("preflight")
     pre.add_argument("--config")
     pub = sub.add_parser("publish")
@@ -34,6 +38,31 @@ def main(argv=None) -> int:
         manifest = load_manifest(args.manifest)
         result = {"ok": True, "mode": "preflight-only", "copy_mode": manifest["copy_mode"], "tables": [t["name"] for t in manifest["tables"]], "message": "模板结构已读取；连接真实飞书前不会创建或修改任何表格"}
         print(json.dumps(result, ensure_ascii=False, indent=2))
+        return 0
+    if args.command == "status":
+        from pathlib import Path
+        import json as _json
+        run_dir = Path("state/runs") / args.run_id
+        if not run_dir.exists():
+            print(_json.dumps({"ok": False, "error": "找不到这个运行记录"}, ensure_ascii=False))
+            return 2
+        files = []
+        for p in run_dir.glob("*.json"):
+            try:
+                files.append(_json.loads(p.read_text(encoding="utf-8")))
+            except _json.JSONDecodeError:
+                continue
+        print(_json.dumps({"ok": True, "run_id": args.run_id, "checkpoints": files}, ensure_ascii=False, indent=2))
+        return 0
+    if args.command == "rollback":
+        from pathlib import Path
+        run_dir = Path("state/runs") / args.run_id
+        if not run_dir.exists():
+            print(json.dumps({"ok": False, "error": "找不到这个运行记录"}, ensure_ascii=False))
+            return 2
+        marker = run_dir / "rollback-requested.json"
+        write_json(marker, {"run_id": args.run_id, "status": "rollback_requested", "scope": "local_state_only", "external_posts": "not_deleted"})
+        print(json.dumps({"ok": True, "message": "已标记恢复本地状态；外部平台已发布内容不会被删除"}, ensure_ascii=False))
         return 0
     cfg = Config.load(getattr(args, "config", None))
     if args.command == "preflight":
